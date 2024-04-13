@@ -1,4 +1,4 @@
-import { Ownership } from "../dataTypes/ownership";
+import { ImmediateOwnershipVC } from "../dataTypes/immediateOwner";
 import {
   OwnershipVC,
   UltimateBeneficialOwner,
@@ -6,7 +6,7 @@ import {
 
 // ========== THE EXAMPLE BELOW ILLUSTRATES THE OWNERSHIP DATA MODEL IN THE WALLET OF THE CUSTOMER ENTITY ======
 
-const OpCo_OwnershipVC: OwnershipVC = {
+export const OpCo_OwnershipVC: OwnershipVC = {
   entity: {
     entityId: "1",
     businessName: "OpCo",
@@ -15,7 +15,7 @@ const OpCo_OwnershipVC: OwnershipVC = {
   },
   immediateOwners: [
     {
-      entityID: "2",
+      entityId: "2",
       isControllingOwner: true,
       isNaturalPerson: false,
       relationsWithTargetEntity: [
@@ -33,7 +33,7 @@ const OpCo_OwnershipVC: OwnershipVC = {
       ],
     },
     {
-      entityID: "3",
+      entityId: "3",
       isControllingOwner: true,
       isNaturalPerson: false,
       relationsWithTargetEntity: {
@@ -65,7 +65,7 @@ const HoldCo1_OwnershipVC: OwnershipVC = {
   },
   immediateOwners: [
     {
-      entityID: "4",
+      entityId: "4",
       isControllingOwner: true,
       isNaturalPerson: true,
       relationsWithTargetEntity: {
@@ -93,7 +93,7 @@ const HoldCo2_OwnershipVC: OwnershipVC = {
   },
   immediateOwners: [
     {
-      entityID: "5",
+      entityId: "5",
       isControllingOwner: true,
       isNaturalPerson: true,
       relationsWithTargetEntity: {
@@ -109,7 +109,7 @@ const HoldCo2_OwnershipVC: OwnershipVC = {
       },
     },
     {
-      entityID: "6",
+      entityId: "6",
       isControllingOwner: true,
       isNaturalPerson: true,
       relationsWithTargetEntity: {
@@ -175,7 +175,7 @@ const ultimateBeneficialOwner2: UltimateBeneficialOwner = {
   ownershipChain: [],
 };
 
-const groupEntities: OwnershipVC[] = [
+export const dataBaseOfEntityVCs: (OwnershipVC | ImmediateOwnershipVC)[] = [
   OpCo_OwnershipVC,
   HoldCo1_OwnershipVC,
   HoldCo2_OwnershipVC,

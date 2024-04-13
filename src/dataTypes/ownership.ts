@@ -1,15 +1,9 @@
-import { ImmediateOwner } from "./immediateOwner";
+import { ImmediateOwner, ImmediateOwnershipVC } from "./immediateOwner";
 import { UltimateBeneficialOwner } from "./ultimateBeneficialOwner";
 
-export interface Ownership {
-  entity: BasicEntityInfo;
-  immediateOwners: ImmediateOwner | ImmediateOwner[];
-  ultimateBeneficialOwners: UltimateBeneficialOwner | UltimateBeneficialOwner[];
-}
-
-export interface OwnershipVC extends Ownership {
-  [key: string]: any;
-}
+export type OwnershipVC = ImmediateOwnershipVC & {
+  ultimateBeneficialOwners: UltimateBeneficialOwner[];
+};
 
 export interface BasicEntityInfo {
   entityId: string; // could be "did"
