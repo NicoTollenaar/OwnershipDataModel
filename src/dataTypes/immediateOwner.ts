@@ -1,35 +1,14 @@
-export interface ImmediateBeneficialOwnership {
-  EntityID: EntityID;
-  LEI: string;
-  NameBusiness: string;
-  Legalform: LegalForm;
-  ImmediateOwners: ImmediateOwner | ImmediateOwner[];
-}
-
-export type EntityID = string;
-
-type LegalForm =
-  | "besloten vennootschap"
-  | "naamloze nennootschap"
-  | "limited liability company"
-  | "maatschap"
-  | "vof"
-  | "cooperatie"
-  | "stichting"
-  | "vereniging"
-  | "kerkgenootschap";
-
-type ImmediateOwner = {
-  ImmediateOwnerID: string;
+export type ImmediateOwner = {
+  entityID: string;
   isControllingOwner: boolean;
-  relationsWithEntity: Relation | Relation[];
+  isNaturalPerson: boolean; //true only if natural person holds the participation for itself rather than for another
+  relationsWithTargetEntity: Relation | Relation[];
 };
 
 export type Relation = {
-  relationID: string;
   relationType: RelationType;
-  particpation: number | undefined;
-  documents: SupportingDocument | SupportingDocument[] | null;
+  particpation: number | undefined; // meaning depends on relationType; to be worked out
+  supportingDocuments: SupportingDocument | SupportingDocument[] | null;
 };
 
 export type RelationType =
@@ -41,7 +20,7 @@ export type RelationType =
 type SupportingDocument = {
   documentType: SupportingDocumentType | undefined;
   documentName: string | undefined;
-  documentDate: string | undefined;
+  documentDate: string | undefined; // date string in ISO 8601 format ("YYYY-MM-DD");
   documentParties?: string[];
   documentAbstract?: string;
   ref: string;
