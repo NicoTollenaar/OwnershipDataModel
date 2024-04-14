@@ -1,128 +1,119 @@
-import { OpCo_OwnershipVC, dataBaseOfEntityVCs } from "../examples/example1";
+// getUboChains(entityId) gets the ultimate beneficial owners of the entity with id entityId on the basis
+// of (only) the immediate ownership of each of the intermediate entities
+
+import { entityDiscovery } from "../examples/example1";
 import { OwnershipVC } from "../dataTypes/ultimateBeneficialOwner";
 import {
   ImmediateOwner,
   ImmediateOwnershipVC,
 } from "../dataTypes/immediateOwner";
 
-// gets the ultimate beneficial owners of an entity on the basis of (only) the
-// immediate ownership of each of the intermediate entities
+interface UboChains {
+  [key: string]: string[];
+}
+interface UboChainsPopulated {
+  [key: string]: (OwnershipVC | ImmediateOwnershipVC)[];
+}
 
-function getUBOs(
-  entityOwnershipVC: OwnershipVC | ImmediateOwnershipVC
-) /*add return type*/ {
-  let entities: (OwnershipVC | ImmediateOwnershipVC | undefined)[] = [
-    entityOwnershipVC,
-  ];
-  let controllingEntities = entityOwnershipVC.immediateOwners.filter(
-    (owner: ImmediateOwner) => owner.isControllingOwner
-  );
+function getUboChains(entityId: string): UboChains {
+  let entities: (OwnershipVC | ImmediateOwnershipVC)[] = getOwnershipVCs([
+    entityId,
+  ]);
 
-  // let controllingLegalEntities = controllingEntities.filter(
-  //   (owner: ImmediateOwner) => !owner.isNaturalPerson
-  // );
+  let uboChains: {
+    [key: string]: string[];
+  } = {};
 
-  let uboChains: any = {}; // revisit type of Ubochains later
-  controllingEntities.forEach((controllingEntity: ImmediateOwner) => {
-    uboChains[controllingEntity.entityId] = [entityOwnershipVC.entity.entityId];
-  });
-  console.log("uboChains:", uboChains);
-
-  let controllingLegalEntitiesNextLayer: (
-    | OwnershipVC
-    | ImmediateOwnershipVC
-    | undefined
-  )[] = getControllingLegalEntitiesNextLayer(controllingEntities);
-
-  console.log("entities next layer:", controllingLegalEntitiesNextLayer);
-
-  getUboChainsNextLayer(controllingLegalEntitiesNextLayer);
-  function getUboChainsNextLayer(
-    legalEntitiesNextLayer: OwnershipVC | ImmediateOwnershipVC[]
-  ) {
-    controllingEntities = controllingLegalEntitiesNextLayer.reduce(
-      (acc, curr) => {
-        let newControllingEntities: ImmediateOwner[] = [
-          ...acc?.immediateOwners,
-          ...curr?.immediateOwners,
-        ];
-        return newControllingEntities;
-      }
+  const controllingOwners: ImmediateOwner[] =
+    entities[0].immediateOwners.filter(
+      (e: ImmediateOwner) => e.isControllingOwner
     );
-    console.log("controllingEntities next Layer:", controllingEntities);
-  }
-  entities?.forEach(
-    (entity: OwnershipVC | ImmediateOwnershipVC | undefined) => {
-      controllingEntities.forEach((controllingEntity: ImmediateOwner) => {
-        uboChains[controllingEntity.entityId] = [
-          ...uboChains[entity?.entityId],
-          entity?.entityId,
+
+  controllingOwners.forEach((controllingOwner: ImmediateOwner) => {
+    uboChains[controllingOwner.entityId] = [entities[0].entity.entityId];
+  });
+
+  getUboChainsNextLayer(entities);
+  function getUboChainsNextLayer(
+    entitiesCurrentLayer: (OwnershipVC | ImmediateOwnershipVC)[]
+  ) {
+    entities = getControllingLegalEntitiesNextLayer(entitiesCurrentLayer);
+    if (entities.length === 0) return;
+
+    entities.forEach((entity: OwnershipVC | ImmediateOwnershipVC) => {
+      const controllingOwners: ImmediateOwner[] = entity.immediateOwners.filter(
+        (e: ImmediateOwner) => e.isControllingOwner
+      );
+
+      controllingOwners.forEach((controllingOwner: ImmediateOwner) => {
+        uboChains[controllingOwner.entityId] = [
+          ...uboChains[entity.entity.entityId],
+          entity.entity.entityId,
         ];
-        delete uboChains[entity?.entityId];
       });
-    }
-  );
-  console.log("new uboChains:", uboChains);
+      delete uboChains[entity.entity.entityId];
+    });
+    getUboChainsNextLayer(entities);
+  }
+
+  return uboChains;
 }
 
 function getControllingLegalEntitiesNextLayer(
-  controllingEntities: ImmediateOwner[]
-): (OwnershipVC | ImmediateOwnershipVC | undefined)[] {
-  const controllingLegalEntities: ImmediateOwner[] = controllingEntities.filter(
-    (owner: ImmediateOwner) => !owner.isNaturalPerson
+  entities: (OwnershipVC | ImmediateOwnershipVC)[]
+): (OwnershipVC | ImmediateOwnershipVC)[] {
+  const allImmediateOwners: ImmediateOwner[] = entities.reduce(
+    (acc: ImmediateOwner[], curr) => {
+      let allImmediateOwnerIds: ImmediateOwner[] = [
+        ...acc,
+        ...curr?.immediateOwners,
+      ];
+      return allImmediateOwnerIds;
+    },
+    []
   );
-  const controllingLegalEntityVCs: (
-    | OwnershipVC
-    | ImmediateOwnershipVC
-    | undefined
-  )[] = getOwnershipVCs(controllingLegalEntities);
-  return controllingLegalEntityVCs;
-}
 
+  const allControllingLegalEntityIds: string[] = allImmediateOwners
+    .filter((owner: ImmediateOwner) => owner.isControllingOwner)
+    .filter(
+      (controllingOwner: ImmediateOwner) => !controllingOwner.isNaturalPerson
+    )
+    .map(
+      (controllingLegalEntityOwner: ImmediateOwner) =>
+        controllingLegalEntityOwner.entityId
+    );
+
+  if (allControllingLegalEntityIds.length === 0) return [];
+
+  return getOwnershipVCs(allControllingLegalEntityIds);
+}
 function getOwnershipVCs(
-  controllingEntities: ImmediateOwner[]
-): (OwnershipVC | ImmediateOwnershipVC | undefined)[] {
-  console.log(
-    "In getOwnershipVCs logging controllingEntities:",
-    controllingEntities
-  );
-  console.log(
-    "In getOwnershipVCs logging dataBaseOfEntityVCs:",
-    dataBaseOfEntityVCs
-  );
-  const OwnershipVCs: (OwnershipVC | ImmediateOwnershipVC | undefined)[] =
-    controllingEntities.map((controllingEntity: ImmediateOwner) => {
-      const found = dataBaseOfEntityVCs.find(
-        (dbEntity: OwnershipVC | ImmediateOwnershipVC) =>
-          dbEntity.entity.entityId === controllingEntity.entityId
+  entityIds: string[]
+): (OwnershipVC | ImmediateOwnershipVC)[] {
+  const entityVCs: (OwnershipVC | ImmediateOwnershipVC | undefined)[] =
+    entityIds.map((entityId: string) => {
+      const VC = entityDiscovery.find(
+        (discoverableEntity: OwnershipVC | ImmediateOwnershipVC) =>
+          discoverableEntity.entity.entityId === entityId
       );
-      console.log("found:", found);
-      return found;
+      return VC;
     });
-  console.log("OwnershipVCs:", OwnershipVCs);
-  return OwnershipVCs;
+  return entityVCs.filter(
+    (e): e is OwnershipVC | ImmediateOwnershipVC => e !== undefined
+  );
 }
 
-getUBOs(OpCo_OwnershipVC);
+function getUboChainsPopulated(uboChain: {
+  [key: string]: string[];
+}): UboChainsPopulated {
+  let uboChainsPopulated: UboChainsPopulated = {};
+  for (let key in uboChain) {
+    uboChainsPopulated[key] = getOwnershipVCs(uboChain[key]);
+  }
+  return uboChainsPopulated;
+}
+const uboChains: UboChains = getUboChains("1");
+const uboChainsPopulated: UboChainsPopulated = getUboChainsPopulated(uboChains);
 
-// let uboChain
-// let controllingEntitiesCurrentLayer
-// controllingEntitiesCurrentLayer = entityVC.immediateOwners.filter(isControllingEntity)
-
-// entities: any[] = [bottomMostentity]
-// controllingEntities: any[] = bottomMostEntity.immediateCOwners.filter(controlling)
-
-// runthroughlayer
-
-// forEach entity{
-
-// forEach controllingEntity
-
-// getChainsForNextLayer()
-
-// uboChainObject[controllingentityId] = [...uboChainObject[entityId]?, entityId]
-// if !entity.isNateralPerson delete uboChainObject[entity]
-// entities = sum of all controllingEntities (concat/reduce)
-// legalEntities = entities.filter(!natural person)
-// if length.legalEntities === 0; break
-// getChainsForNextLayer(legalEntities)
+console.log("uboChains:", uboChains);
+console.log("uboChainsPopulated:", uboChainsPopulated);

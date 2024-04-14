@@ -175,7 +175,7 @@ const ultimateBeneficialOwner2: UltimateBeneficialOwner = {
   ownershipChain: [],
 };
 
-export const dataBaseOfEntityVCs: (OwnershipVC | ImmediateOwnershipVC)[] = [
+export const entityDiscovery: (OwnershipVC | ImmediateOwnershipVC)[] = [
   OpCo_OwnershipVC,
   HoldCo1_OwnershipVC,
   HoldCo2_OwnershipVC,
