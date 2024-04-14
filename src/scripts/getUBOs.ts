@@ -1,12 +1,12 @@
 // getUboChains(did) gets the ultimate beneficial owners of the entity with id did on the basis
 // of (only) the immediate ownership of each of the intermediate entities
 
-import { entityDiscovery } from "../examples/example1";
-import { OwnershipVC } from "../dataTypes/ultimateBeneficialOwner";
+import { entityDiscovery } from "./testDataSet1";
 import {
   ImmediateOwner,
   ImmediateOwnershipVC,
 } from "../dataTypes/immediateOwner";
+import { OwnershipVC } from "../dataTypes/ownership";
 
 interface UboChains {
   [key: string]: string[];
@@ -94,11 +94,30 @@ function getControllingLegalEntitiesNextLayer(
 
   return getOwnershipVCs(allControllingLegalEntityDids);
 }
+
+// function getOwnershipVCs(dids: string[]): (OwnershipVC | ImmediateOwnershipVC)[] {
+//   const entityVCs: (OwnershipVC | ImmediateOwnershipVC | undefined)[] =
+//     dids.map((did: string) => {
+//       const VC = entityDiscovery.find(
+//         (discoverableEntity: OwnershipVC | ImmediateOwnershipVC | any) => {
+//           if ("thisEntity" in discoverableEntity) return true;
+//           if (discoverableEntity.did === did) return true;
+//           return true;
+//         }
+//       );
+//       return VC;
+//     });
+
+//   return entityVCs.filter(
+//     (e): e is OwnershipVC | ImmediateOwnershipVC => e !== undefined
+//   );
+// }
+
 function getOwnershipVCs(
-  entityDids: string[]
+  dids: string[]
 ): (OwnershipVC | ImmediateOwnershipVC)[] {
   const entityVCs: (OwnershipVC | ImmediateOwnershipVC | undefined)[] =
-    entityDids.map((did: string) => {
+    dids.map((did: string) => {
       const VC = entityDiscovery.find(
         (discoverableEntity: OwnershipVC | ImmediateOwnershipVC) =>
           discoverableEntity.thisEntity.did === did
@@ -120,7 +139,7 @@ function getUboChainsPopulated(uboChain: {
   }
   return uboChainsPopulated;
 }
-const uboChains: UboChains | null = getUboChains("1");
+const uboChains: UboChains | null = getUboChains("did:web:opco.com");
 if (uboChains) {
   const uboChainsPopulated: UboChainsPopulated =
     getUboChainsPopulated(uboChains);

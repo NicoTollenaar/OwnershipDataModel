@@ -1,4 +1,4 @@
-import { BasicEntityInfo } from "./ownership";
+// intermediate entities use either the ImmediateOwnership VC or the Ownership VC with UBO information
 
 export interface ImmediateOwnershipVC {
   thisEntity: BasicEntityInfo;
@@ -6,10 +6,51 @@ export interface ImmediateOwnershipVC {
   [key: string]: any;
 }
 
+export interface BasicEntityInfo {
+  did: string;
+  LEI: string;
+  businessName: string;
+  legalForm: LegalForm;
+}
+
+interface LegalForm {
+  transliteratedName: ELF_Netherlands | ELF_Rest_Of_World; // per ISO 01-140-10 as used by GLEIF in ELF list
+  ELF_code: ELF_Code; // to be retrieved from the ISO 20275 Entity Form List maintained by GLEIF
+}
+
+type ELF_Netherlands =
+  | "eenmanszaak"
+  | "maatschap"
+  | "vennootschap onder firma"
+  | "commanditaire vennootschap"
+  | "besloten vennootschap met beperkte aansprakelijkheid"
+  | "naamloze vennootschap"
+  | "stichting"
+  | "vereniging"
+  | "coöperatieve vereniging"
+  | "onderlinge waarborgmaatschappij"
+  | "Europees economisch samenwerkingsverband"
+  | "Europese coöperatieve vennootschap"
+  | "Europese naamloze vennootschap"
+  | "kerkgenootschap"
+  | "publiekrechtelijke rechtspersoon"
+  | "rederij"
+  | "overige privaatrechtelijke rechtspersoon"
+  | "fonds voor gelijke behandeling"
+  | "fonds voor collectieve belangen"
+  | "samenwerkingsverband zonder rechtspersoonlijkheid"
+  | "andere niet in de lijst opgenomen rechtsvorm";
+
+// import ELF codes from the ISO 20275 Entity Legal Forms List at
+// https://www.gleif.org/en/about-lei/code-lists/iso-20275-entity-legal-forms-code-list
+type ELF_Rest_Of_World = string;
+
+type ELF_Code = string;
+
 export type ImmediateOwner = {
   did: string;
   isControllingOwner: boolean;
-  isNaturalPerson: boolean; //true only if natural person holds the participation for itself rather than for another
+  isNaturalPerson: boolean;
   relationsWithTargetEntity: Relation | Relation[];
 };
 
@@ -19,6 +60,8 @@ export type Relation = {
   supportingDocuments: SupportingDocument | SupportingDocument[] | null;
 };
 
+// RelationshipTypes to be completed using appropriate taxonomies
+// check and align with UBO-relationship terminology used by GLEIF
 export type RelationType =
   | "shareholdingVoting"
   | "shareholdingNonVoting"
@@ -35,6 +78,8 @@ type SupportingDocument = {
   hash: string;
 };
 
+// to be expanded and improved using appropriate taxonomies
+// check and align with UBO-relationship terminology used by GLEIF
 type SupportingDocumentType =
   | "ubo-form"
   | "chamber of commerce extract"
