@@ -1,4 +1,4 @@
-import { ImmediateOwner, ImmediateOwnershipVC } from "./immediateOwner";
+import { ImmediateOwnershipVC } from "./immediateOwner";
 import { UltimateBeneficialOwner } from "./ultimateBeneficialOwner";
 
 export type OwnershipVC = ImmediateOwnershipVC & {
@@ -6,13 +6,18 @@ export type OwnershipVC = ImmediateOwnershipVC & {
 };
 
 export interface BasicEntityInfo {
-  entityId: string; // could be "did"
+  did: string;
   LEI: string;
   businessName: string;
   legalForm: LegalForm;
 }
 
-type LegalForm =
+interface LegalForm {
+  nationalType: NationalLegalEntityType; // legal form in local national terminology
+  LEI_term: LEI_legalFormGlossary;
+}
+
+type NationalLegalEntityType =
   | "besloten vennootschap"
   | "naamloze nennootschap"
   | "limited liability company"
@@ -27,3 +32,5 @@ type LegalForm =
   | "gemeente"
   | "provincie"
   | "staat";
+
+type LEI_legalFormGlossary = string; // still to be imported

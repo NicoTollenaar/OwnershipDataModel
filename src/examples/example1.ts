@@ -8,14 +8,14 @@ import {
 
 export const OpCo_OwnershipVC: OwnershipVC = {
   entity: {
-    entityId: "1",
+    did: "1",
     businessName: "OpCo",
     LEI: "LEI-code-1",
     legalForm: "besloten vennootschap",
   },
   immediateOwners: [
     {
-      entityId: "2",
+      did: "2",
       isControllingOwner: true,
       isNaturalPerson: false,
       relationsWithTargetEntity: [
@@ -33,7 +33,7 @@ export const OpCo_OwnershipVC: OwnershipVC = {
       ],
     },
     {
-      entityId: "3",
+      did: "3",
       isControllingOwner: true,
       isNaturalPerson: false,
       relationsWithTargetEntity: {
@@ -58,14 +58,14 @@ export const OpCo_OwnershipVC: OwnershipVC = {
 
 const HoldCo1_OwnershipVC: OwnershipVC = {
   entity: {
-    entityId: "2",
+    did: "2",
     businessName: "HoldCo1",
     LEI: "LEI-code-2",
     legalForm: "besloten vennootschap",
   },
   immediateOwners: [
     {
-      entityId: "4",
+      did: "4",
       isControllingOwner: true,
       isNaturalPerson: true,
       relationsWithTargetEntity: {
@@ -86,14 +86,14 @@ const HoldCo1_OwnershipVC: OwnershipVC = {
 
 const HoldCo2_OwnershipVC: OwnershipVC = {
   entity: {
-    entityId: "3",
+    did: "3",
     businessName: "HoldCo2",
     LEI: "LEI-code-3",
     legalForm: "besloten vennootschap",
   },
   immediateOwners: [
     {
-      entityId: "5",
+      did: "5",
       isControllingOwner: true,
       isNaturalPerson: true,
       relationsWithTargetEntity: {
@@ -109,7 +109,7 @@ const HoldCo2_OwnershipVC: OwnershipVC = {
       },
     },
     {
-      entityId: "6",
+      did: "6",
       isControllingOwner: true,
       isNaturalPerson: true,
       relationsWithTargetEntity: {

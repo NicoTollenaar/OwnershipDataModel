@@ -1,17 +1,17 @@
 import { BasicEntityInfo } from "./ownership";
 
-export type ImmediateOwner = {
-  entityId: string;
-  isControllingOwner: boolean;
-  isNaturalPerson: boolean; //true only if natural person holds the participation for itself rather than for another
-  relationsWithTargetEntity: Relation | Relation[];
-};
-
 export interface ImmediateOwnershipVC {
   entity: BasicEntityInfo;
   immediateOwners: ImmediateOwner[];
   [key: string]: any;
 }
+
+export type ImmediateOwner = {
+  did: string;
+  isControllingOwner: boolean;
+  isNaturalPerson: boolean; //true only if natural person holds the participation for itself rather than for another
+  relationsWithTargetEntity: Relation | Relation[];
+};
 
 export type Relation = {
   relationType: RelationType;

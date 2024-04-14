@@ -1,4 +1,4 @@
-// getUboChains(entityId) gets the ultimate beneficial owners of the entity with id entityId on the basis
+// getUboChains(did) gets the ultimate beneficial owners of the entity with id did on the basis
 // of (only) the immediate ownership of each of the intermediate entities
 
 import { entityDiscovery } from "../examples/example1";
@@ -15,10 +15,8 @@ interface UboChainsPopulated {
   [key: string]: (OwnershipVC | ImmediateOwnershipVC)[];
 }
 
-function getUboChains(entityId: string): UboChains | null {
-  let entities: (OwnershipVC | ImmediateOwnershipVC)[] = getOwnershipVCs([
-    entityId,
-  ]);
+function getUboChains(did: string): UboChains | null {
+  let entities: (OwnershipVC | ImmediateOwnershipVC)[] = getOwnershipVCs([did]);
 
   if (
     !entities[0] ||
@@ -39,7 +37,7 @@ function getUboChains(entityId: string): UboChains | null {
     );
 
   controllingOwners.forEach((controllingOwner: ImmediateOwner) => {
-    uboChains[controllingOwner.entityId] = [entities[0].entity.entityId];
+    uboChains[controllingOwner.did] = [entities[0].entity.did];
   });
 
   getUboChainsNextLayer(entities);
@@ -55,12 +53,12 @@ function getUboChains(entityId: string): UboChains | null {
       );
 
       controllingOwners.forEach((controllingOwner: ImmediateOwner) => {
-        uboChains[controllingOwner.entityId] = [
-          ...uboChains[entity.entity.entityId],
-          entity.entity.entityId,
+        uboChains[controllingOwner.did] = [
+          ...uboChains[entity.entity.did],
+          entity.entity.did,
         ];
       });
-      delete uboChains[entity.entity.entityId];
+      delete uboChains[entity.entity.did];
     });
     getUboChainsNextLayer(entities);
   }
@@ -82,28 +80,28 @@ function getControllingLegalEntitiesNextLayer(
     []
   );
 
-  const allControllingLegalEntityIds: string[] = allImmediateOwners
+  const allControllingLegalEntityDids: string[] = allImmediateOwners
     .filter((owner: ImmediateOwner) => owner.isControllingOwner)
     .filter(
       (controllingOwner: ImmediateOwner) => !controllingOwner.isNaturalPerson
     )
     .map(
       (controllingLegalEntityOwner: ImmediateOwner) =>
-        controllingLegalEntityOwner.entityId
+        controllingLegalEntityOwner.did
     );
 
-  if (allControllingLegalEntityIds.length === 0) return [];
+  if (allControllingLegalEntityDids.length === 0) return [];
 
-  return getOwnershipVCs(allControllingLegalEntityIds);
+  return getOwnershipVCs(allControllingLegalEntityDids);
 }
 function getOwnershipVCs(
-  entityIds: string[]
+  entityDids: string[]
 ): (OwnershipVC | ImmediateOwnershipVC)[] {
   const entityVCs: (OwnershipVC | ImmediateOwnershipVC | undefined)[] =
-    entityIds.map((entityId: string) => {
+    entityDids.map((did: string) => {
       const VC = entityDiscovery.find(
         (discoverableEntity: OwnershipVC | ImmediateOwnershipVC) =>
-          discoverableEntity.entity.entityId === entityId
+          discoverableEntity.entity.did === did
       );
       return VC;
     });
@@ -122,7 +120,7 @@ function getUboChainsPopulated(uboChain: {
   }
   return uboChainsPopulated;
 }
-const uboChains: UboChains | null = getUboChains("4");
+const uboChains: UboChains | null = getUboChains("1");
 if (uboChains) {
   const uboChainsPopulated: UboChainsPopulated =
     getUboChainsPopulated(uboChains);
