@@ -15,11 +15,20 @@ interface UboChainsPopulated {
   [key: string]: (OwnershipVC | ImmediateOwnershipVC)[];
 }
 
-function getUboChains(entityId: string): UboChains {
+function getUboChains(entityId: string): UboChains | null {
   let entities: (OwnershipVC | ImmediateOwnershipVC)[] = getOwnershipVCs([
     entityId,
   ]);
 
+  if (
+    !entities[0] ||
+    !("immediateOwners" in entities[0] || entities.length === 0)
+  ) {
+    console.log(
+      "The id that you entered belongs to a natural person or is unknown"
+    );
+    return null;
+  }
   let uboChains: {
     [key: string]: string[];
   } = {};
@@ -98,6 +107,7 @@ function getOwnershipVCs(
       );
       return VC;
     });
+
   return entityVCs.filter(
     (e): e is OwnershipVC | ImmediateOwnershipVC => e !== undefined
   );
@@ -112,8 +122,10 @@ function getUboChainsPopulated(uboChain: {
   }
   return uboChainsPopulated;
 }
-const uboChains: UboChains = getUboChains("1");
-const uboChainsPopulated: UboChainsPopulated = getUboChainsPopulated(uboChains);
-
-console.log("uboChains:", uboChains);
-console.log("uboChainsPopulated:", uboChainsPopulated);
+const uboChains: UboChains | null = getUboChains("4");
+if (uboChains) {
+  const uboChainsPopulated: UboChainsPopulated =
+    getUboChainsPopulated(uboChains);
+  console.log("uboChains:", uboChains);
+  console.log("uboChainsPopulated:", uboChainsPopulated);
+}
