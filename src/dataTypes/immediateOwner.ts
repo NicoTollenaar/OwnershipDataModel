@@ -1,7 +1,7 @@
 import { BasicEntityInfo } from "./ownership";
 
 export interface ImmediateOwnershipVC {
-  entity: BasicEntityInfo;
+  thisEntity: BasicEntityInfo;
   immediateOwners: ImmediateOwner[];
   [key: string]: any;
 }

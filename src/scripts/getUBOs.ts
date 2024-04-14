@@ -37,7 +37,7 @@ function getUboChains(did: string): UboChains | null {
     );
 
   controllingOwners.forEach((controllingOwner: ImmediateOwner) => {
-    uboChains[controllingOwner.did] = [entities[0].entity.did];
+    uboChains[controllingOwner.did] = [entities[0].thisEntity.did];
   });
 
   getUboChainsNextLayer(entities);
@@ -54,11 +54,11 @@ function getUboChains(did: string): UboChains | null {
 
       controllingOwners.forEach((controllingOwner: ImmediateOwner) => {
         uboChains[controllingOwner.did] = [
-          ...uboChains[entity.entity.did],
-          entity.entity.did,
+          ...uboChains[entity.thisEntity.did],
+          entity.thisEntity.did,
         ];
       });
-      delete uboChains[entity.entity.did];
+      delete uboChains[entity.thisEntity.did];
     });
     getUboChainsNextLayer(entities);
   }
@@ -101,7 +101,7 @@ function getOwnershipVCs(
     entityDids.map((did: string) => {
       const VC = entityDiscovery.find(
         (discoverableEntity: OwnershipVC | ImmediateOwnershipVC) =>
-          discoverableEntity.entity.did === did
+          discoverableEntity.thisEntity.did === did
       );
       return VC;
     });

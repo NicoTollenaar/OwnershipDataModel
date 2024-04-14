@@ -7,7 +7,7 @@ import {
 // ========== THE EXAMPLE BELOW ILLUSTRATES THE OWNERSHIP DATA MODEL IN THE WALLET OF THE CUSTOMER ENTITY ======
 
 export const OpCo_OwnershipVC: OwnershipVC = {
-  entity: {
+  thisEntity: {
     did: "1",
     businessName: "OpCo",
     LEI: "LEI-code-1",
@@ -57,7 +57,7 @@ export const OpCo_OwnershipVC: OwnershipVC = {
 //======================== END OF EXAMPLE ========================================================
 
 const HoldCo1_OwnershipVC: OwnershipVC = {
-  entity: {
+  thisEntity: {
     did: "2",
     businessName: "HoldCo1",
     LEI: "LEI-code-2",
@@ -85,7 +85,7 @@ const HoldCo1_OwnershipVC: OwnershipVC = {
 };
 
 const HoldCo2_OwnershipVC: OwnershipVC = {
-  entity: {
+  thisEntity: {
     did: "3",
     businessName: "HoldCo2",
     LEI: "LEI-code-3",
