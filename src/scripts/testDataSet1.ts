@@ -71,7 +71,7 @@ const HoldCo1_OwnershipVC: OwnershipVC = {
   },
   immediateOwners: [
     {
-      did: "did:web:johndoe",
+      did: "did:web:johndoe.com",
       isControllingOwner: true,
       isNaturalPerson: true,
       relationsWithTargetEntity: {
@@ -210,8 +210,15 @@ const ultimateBeneficialOwner3: UltimateBeneficialOwner = {
   ownershipChain: [],
 };
 
-export const entityDiscovery: (OwnershipVC | ImmediateOwnershipVC)[] = [
+export const entityDiscovery: (
+  | OwnershipVC
+  | ImmediateOwnershipVC
+  | UltimateBeneficialOwner
+)[] = [
   OpCo_OwnershipVC,
   HoldCo1_OwnershipVC,
   HoldCo2_OwnershipVC,
+  ultimateBeneficialOwner1,
+  ultimateBeneficialOwner2,
+  ultimateBeneficialOwner3,
 ];

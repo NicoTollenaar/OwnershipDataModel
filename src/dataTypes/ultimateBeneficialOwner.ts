@@ -4,13 +4,14 @@
 // moving all the way up the corporate chain to this entity immediately
 // beneath the respective UBO or pseudo-UBO (this entity being the last element in the array)
 
+import { ImmediateOwnershipVC } from "./immediateOwner";
 import { NaturalPerson } from "./naturalPerson";
 import { OwnershipVC } from "./ownership";
 
 export interface UltimateBeneficialOwner extends NaturalPerson {
   isPEP: boolean;
   uboType: UboType;
-  ownershipChain: OwnershipVC[] | null;
+  ownershipChain: (OwnershipVC | ImmediateOwnershipVC)[];
 }
 
 type UboType = "UBO" | "pseudo-UBO";
