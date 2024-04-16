@@ -1,0 +1,20 @@
+{
+  "did": "did:web:marydoe.com",
+  "firstNames": "Mary",
+  "lastName": "Doe",
+  "identityDocument": {
+    "documentNumber": "272850HGL3",
+    "documentType": "passport",
+    "issueDate": "1974-04-06",
+    "expiryDate": "2028-10-10",
+    "ref": "uri-copy-passport-mary-doe",
+    "hash": "2bbd123a9b596ef551f94c6206650b38710952edd801edeb3db7160d65cebe56"
+  },
+  "address": {
+    "street": "Ferdinand Bolstraat",
+    "houseNumber": "20",
+    "postalCode": "3525 TH",
+    "city": "Amsterdam",
+    "country": "Netherlands"
+  }
+}

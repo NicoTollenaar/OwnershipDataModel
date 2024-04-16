@@ -1,10 +1,9 @@
-import { ImmediateOwnershipVC } from "../dataTypes/immediateOwner";
-import { OwnershipVC } from "../dataTypes/ownership";
-import { UltimateBeneficialOwner } from "../dataTypes/ultimateBeneficialOwner";
+import { ImmediateOwnershipVC } from "../dataTypes/immediateOwnership";
+import { NaturalPerson } from "../dataTypes/naturalPerson";
 
 // ========== THE EXAMPLE BELOW ILLUSTRATES THE OWNERSHIP DATA MODEL IN THE WALLET OF THE CUSTOMER ENTITY ======
 
-export const OpCo_OwnershipVC: OwnershipVC = {
+export const OpCo: ImmediateOwnershipVC = {
   thisEntity: {
     did: "did:web:opco.com",
     businessName: "OpCo",
@@ -53,12 +52,9 @@ export const OpCo_OwnershipVC: OwnershipVC = {
       },
     },
   ],
-  ultimateBeneficialOwners: [],
 };
 
-//======================== END OF EXAMPLE ========================================================
-
-const HoldCo1_OwnershipVC: OwnershipVC = {
+export const HoldCo1: ImmediateOwnershipVC = {
   thisEntity: {
     did: "did:web:holdco1.com",
     businessName: "HoldCo1",
@@ -87,10 +83,9 @@ const HoldCo1_OwnershipVC: OwnershipVC = {
       },
     },
   ],
-  ultimateBeneficialOwners: [],
 };
 
-const HoldCo2_OwnershipVC: OwnershipVC = {
+export const HoldCo2: ImmediateOwnershipVC = {
   thisEntity: {
     did: "did:web:holdco2.com",
     businessName: "HoldCo2",
@@ -135,14 +130,12 @@ const HoldCo2_OwnershipVC: OwnershipVC = {
       },
     },
   ],
-  ultimateBeneficialOwners: [],
 };
 
-export const ultimateBeneficialOwner1: UltimateBeneficialOwner = {
+export const JohnDoe: NaturalPerson = {
   did: "did:web:johndoe.com",
   firstNames: "John",
   lastName: "Doe",
-  isPEP: false,
   identityDocument: {
     documentNumber: "54850HDK9",
     documentType: "passport",
@@ -151,7 +144,6 @@ export const ultimateBeneficialOwner1: UltimateBeneficialOwner = {
     ref: "uri-copy-passport",
     hash: "7bca49fa22181ff7a89b08d4ec01c4880593b47764c38b225f6e4f05321ed3e8",
   },
-  uboType: "UBO",
   address: {
     street: "Ferdinand Bolstraat",
     houseNumber: "20",
@@ -159,14 +151,12 @@ export const ultimateBeneficialOwner1: UltimateBeneficialOwner = {
     city: "Amsterdam",
     country: "Netherlands",
   },
-  ownershipChain: [],
 };
 
-const ultimateBeneficialOwner2: UltimateBeneficialOwner = {
+export const JaneDoe: NaturalPerson = {
   did: "did:web:janedoe.com",
   firstNames: "Jane",
   lastName: "Doe",
-  isPEP: false,
   identityDocument: {
     documentNumber: "77850HTY5",
     documentType: "passport",
@@ -175,7 +165,6 @@ const ultimateBeneficialOwner2: UltimateBeneficialOwner = {
     ref: "uri-copy-passport-jane-doe",
     hash: "a1b6776f98e855360faf2e04717c6ae3ec6ccae394489befd954fff4c0a5db53",
   },
-  uboType: "UBO",
   address: {
     street: "Ferdinand Bolstraat",
     houseNumber: "20",
@@ -183,14 +172,12 @@ const ultimateBeneficialOwner2: UltimateBeneficialOwner = {
     city: "Amsterdam",
     country: "Netherlands",
   },
-  ownershipChain: [],
 };
 
-const ultimateBeneficialOwner3: UltimateBeneficialOwner = {
+export const MaryDoe: NaturalPerson = {
   did: "did:web:marydoe.com",
   firstNames: "Mary",
   lastName: "Doe",
-  isPEP: false,
   identityDocument: {
     documentNumber: "272850HGL3",
     documentType: "passport",
@@ -199,7 +186,6 @@ const ultimateBeneficialOwner3: UltimateBeneficialOwner = {
     ref: "uri-copy-passport-mary-doe",
     hash: "2bbd123a9b596ef551f94c6206650b38710952edd801edeb3db7160d65cebe56",
   },
-  uboType: "UBO",
   address: {
     street: "Ferdinand Bolstraat",
     houseNumber: "20",
@@ -207,18 +193,10 @@ const ultimateBeneficialOwner3: UltimateBeneficialOwner = {
     city: "Amsterdam",
     country: "Netherlands",
   },
-  ownershipChain: [],
 };
 
 export const entityDiscovery: (
-  | OwnershipVC
   | ImmediateOwnershipVC
-  | UltimateBeneficialOwner
-)[] = [
-  OpCo_OwnershipVC,
-  HoldCo1_OwnershipVC,
-  HoldCo2_OwnershipVC,
-  ultimateBeneficialOwner1,
-  ultimateBeneficialOwner2,
-  ultimateBeneficialOwner3,
-];
+  | ImmediateOwnershipVC
+  | NaturalPerson
+)[] = [OpCo, HoldCo1, HoldCo2, JohnDoe, JaneDoe, MaryDoe];

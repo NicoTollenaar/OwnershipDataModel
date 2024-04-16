@@ -1,25 +1,34 @@
 // getUboChains(did) gets the ultimate beneficial owners of the entity with id did on the basis
 // of (only) the immediate ownership of each of the intermediate entities
-
-import { entityDiscovery, ultimateBeneficialOwner1 } from "./testDataSet1";
+import fs from "fs";
+import {
+  HoldCo2,
+  JohnDoe,
+  MaryDoe,
+  OpCo,
+  entityDiscovery,
+} from "./testDataSet1";
 import {
   ImmediateOwner,
   ImmediateOwnershipVC,
-} from "../dataTypes/immediateOwner";
-import { OwnershipVC } from "../dataTypes/ownership";
+} from "../dataTypes/immediateOwnership";
+import { ImmediateAndUltimateOwnershipVC } from "../dataTypes/immediateAndUltimateOwnership";
 import { UltimateBeneficialOwner } from "../dataTypes/ultimateBeneficialOwner";
+import { NaturalPerson } from "../dataTypes/naturalPerson";
 
 interface UboChains {
   [key: string]: string[];
 }
 interface UboChainsPopulated {
-  [key: string]: (OwnershipVC | ImmediateOwnershipVC)[];
+  [key: string]: (ImmediateAndUltimateOwnershipVC | ImmediateOwnershipVC)[];
 }
 
 function getUboChains(did: string): UboChains | null {
-  let entities: (OwnershipVC | ImmediateOwnershipVC)[] = getOwnershipVCs([
-    did,
-  ]) as (OwnershipVC | ImmediateOwnershipVC)[];
+  let entities: (ImmediateAndUltimateOwnershipVC | ImmediateOwnershipVC)[] =
+    getOwnershipVCs([did]) as (
+      | ImmediateAndUltimateOwnershipVC
+      | ImmediateOwnershipVC
+    )[];
 
   if (
     !entities[0] ||
@@ -46,24 +55,30 @@ function getUboChains(did: string): UboChains | null {
 
   getUboChainsNextLayer(entities);
   function getUboChainsNextLayer(
-    entitiesCurrentLayer: (OwnershipVC | ImmediateOwnershipVC)[]
+    entitiesCurrentLayer: (
+      | ImmediateAndUltimateOwnershipVC
+      | ImmediateOwnershipVC
+    )[]
   ) {
     entities = getControllingLegalEntitiesNextLayer(entitiesCurrentLayer);
     if (entities.length === 0) return;
 
-    entities.forEach((entity: OwnershipVC | ImmediateOwnershipVC) => {
-      const controllingOwners: ImmediateOwner[] = entity.immediateOwners.filter(
-        (e: ImmediateOwner) => e.isControllingOwner
-      );
+    entities.forEach(
+      (entity: ImmediateAndUltimateOwnershipVC | ImmediateOwnershipVC) => {
+        const controllingOwners: ImmediateOwner[] =
+          entity.immediateOwners.filter(
+            (e: ImmediateOwner) => e.isControllingOwner
+          );
 
-      controllingOwners.forEach((controllingOwner: ImmediateOwner) => {
-        uboChains[controllingOwner.did] = [
-          ...uboChains[entity.thisEntity.did],
-          entity.thisEntity.did,
-        ];
-      });
-      delete uboChains[entity.thisEntity.did];
-    });
+        controllingOwners.forEach((controllingOwner: ImmediateOwner) => {
+          uboChains[controllingOwner.did] = [
+            ...uboChains[entity.thisEntity.did],
+            entity.thisEntity.did,
+          ];
+        });
+        delete uboChains[entity.thisEntity.did];
+      }
+    );
     getUboChainsNextLayer(entities);
   }
 
@@ -71,8 +86,8 @@ function getUboChains(did: string): UboChains | null {
 }
 
 function getControllingLegalEntitiesNextLayer(
-  entities: (OwnershipVC | ImmediateOwnershipVC)[]
-): (OwnershipVC | ImmediateOwnershipVC)[] {
+  entities: (ImmediateAndUltimateOwnershipVC | ImmediateOwnershipVC)[]
+): (ImmediateAndUltimateOwnershipVC | ImmediateOwnershipVC)[] {
   const allImmediateOwners: ImmediateOwner[] = entities.reduce(
     (acc: ImmediateOwner[], curr) => {
       let allImmediateOwnerIds: ImmediateOwner[] = [
@@ -97,16 +112,16 @@ function getControllingLegalEntitiesNextLayer(
   if (allControllingLegalEntityDids.length === 0) return [];
 
   return getOwnershipVCs(allControllingLegalEntityDids) as (
-    | OwnershipVC
+    | ImmediateAndUltimateOwnershipVC
     | ImmediateOwnershipVC
   )[];
 }
 
-// function getOwnershipVCs(dids: string[]): (OwnershipVC | ImmediateOwnershipVC)[] {
-//   const entityVCs: (OwnershipVC | ImmediateOwnershipVC | undefined)[] =
+// function getOwnershipVCs(dids: string[]): (ImmediateAndUltimateOwnershipVC | ImmediateOwnershipVC)[] {
+//   const entityVCs: (ImmediateAndUltimateOwnershipVC | ImmediateOwnershipVC | undefined)[] =
 //     dids.map((did: string) => {
 //       const VC = entityDiscovery.find(
-//         (discoverableEntity: OwnershipVC | ImmediateOwnershipVC | any) => {
+//         (discoverableEntity: ImmediateAndUltimateOwnershipVC | ImmediateOwnershipVC | any) => {
 //           if ("thisEntity" in discoverableEntity) return true;
 //           if (discoverableEntity.did === did) return true;
 //           return true;
@@ -116,25 +131,25 @@ function getControllingLegalEntitiesNextLayer(
 //     });
 
 //   return entityVCs.filter(
-//     (e): e is OwnershipVC | ImmediateOwnershipVC => e !== undefined
+//     (e): e is ImmediateAndUltimateOwnershipVC | ImmediateOwnershipVC => e !== undefined
 //   );
 // }
 
 function getOwnershipVCs(
   dids: string[]
-): (OwnershipVC | ImmediateOwnershipVC | UltimateBeneficialOwner)[] {
+): (ImmediateAndUltimateOwnershipVC | ImmediateOwnershipVC | NaturalPerson)[] {
   const entityVCs: (
-    | OwnershipVC
+    | ImmediateAndUltimateOwnershipVC
     | ImmediateOwnershipVC
     | undefined
-    | UltimateBeneficialOwner
+    | NaturalPerson
   )[] = dids.map((did: string) => {
     const VC = entityDiscovery.find(
       (
         discoverableEntity:
-          | OwnershipVC
+          | ImmediateAndUltimateOwnershipVC
           | ImmediateOwnershipVC
-          | UltimateBeneficialOwner
+          | NaturalPerson
       ) => {
         if ("thisEntity" in discoverableEntity)
           return discoverableEntity.thisEntity.did === did;
@@ -145,8 +160,12 @@ function getOwnershipVCs(
   });
 
   return entityVCs.filter(
-    (e): e is OwnershipVC | ImmediateOwnershipVC | UltimateBeneficialOwner =>
-      e !== undefined
+    (
+      e
+    ): e is
+      | ImmediateAndUltimateOwnershipVC
+      | ImmediateOwnershipVC
+      | UltimateBeneficialOwner => e !== undefined
   );
 }
 
@@ -156,10 +175,16 @@ function getUboChainsPopulated(uboChain: {
   let uboChainsPopulated: UboChainsPopulated = {};
   for (let key in uboChain) {
     uboChainsPopulated[key] = getOwnershipVCs(uboChain[key]) as (
-      | OwnershipVC
+      | ImmediateAndUltimateOwnershipVC
       | ImmediateOwnershipVC
     )[];
   }
+  fs.writeFileSync(
+    "./src/scripts/outputUboChainDids.json",
+    JSON.stringify(uboChains, null, 2),
+    "utf-8"
+  );
+
   return uboChainsPopulated;
 }
 
@@ -167,20 +192,56 @@ function getUBOs(
   uboChainsPopulated: UboChainsPopulated
 ): UltimateBeneficialOwner[] {
   let uboArray: UltimateBeneficialOwner[] = [];
-  console.log("In getUBOs logging, uboCHainsPopulated:", uboChainsPopulated);
   for (let key in uboChainsPopulated) {
     let [ubo]: UltimateBeneficialOwner[] = getOwnershipVCs([
       key,
     ]) as UltimateBeneficialOwner[];
-    console.log("[key]:", [key]);
-    console.log("getOwnershipVCs:", getOwnershipVCs([key]));
-    console.log("ubo:", ubo);
     ubo["ownershipChain"] = uboChainsPopulated[key];
+    ubo.isPEP = true;
+    ubo.uboType = "UBO";
     uboArray.push(ubo);
   }
-  console.log(uboArray);
+  fs.writeFileSync(
+    "./src/scripts/outputUBOsInFull.json",
+    JSON.stringify(uboArray, null, 2),
+    "utf-8"
+  );
   return uboArray;
 }
+console.log("Mary Doe outside:", MaryDoe);
+
+fs.writeFileSync(
+  "./src/jsonExamples/naturalPerson.json",
+  JSON.stringify(MaryDoe, null, 2),
+  "utf-8"
+);
+function writeJsonToFiles(uboArray: UltimateBeneficialOwner[]) {
+  console.log("Mary Doe inside:", MaryDoe);
+  fs.writeFileSync(
+    "./src/jsonExamples/ImmediateOwnershipVC.json",
+    JSON.stringify(HoldCo2, null, 2),
+    "utf-8"
+  );
+  //  let immediateAndUltimateOwnershipVC: ImmediateAndUltimateOwnershipVC = OpCo;
+  // OpCo.ultimateBeneficialOwners = uboArray;
+
+  let OpCoUltimate: ImmediateAndUltimateOwnershipVC = {
+    ...OpCo,
+    ultimateBeneficialOwners: uboArray,
+  };
+  fs.writeFileSync(
+    "./src/jsonExamples/ImmediateAndUltimateOwnershipVC.json",
+    JSON.stringify(OpCoUltimate, null, 2),
+    "utf-8"
+  );
+  fs.writeFileSync(
+    "./src/jsonExamples/UltimateOwnerVC.json",
+    JSON.stringify(uboArray[0], null, 2),
+    "utf-8"
+  );
+}
+
+// ========== LOG AND WRITE TO FILES =================================
 
 const uboChains: UboChains | null = getUboChains("did:web:opco.com");
 if (uboChains) {
@@ -188,7 +249,8 @@ if (uboChains) {
     getUboChainsPopulated(uboChains);
   const uboArray: UltimateBeneficialOwner[] = getUBOs(uboChainsPopulated);
   console.log("uboChains:", uboChains);
-  console.log("uboChainsPopulated:", uboChainsPopulated);
+  // console.log("uboChainsPopulated:", uboChainsPopulated);
   console.log("uboArray:", uboArray);
-  console.log("uboArray[2].ownershipChain:", uboArray[2].ownershipChain);
+  // console.log("uboArray[2].ownershipChain:", uboArray[2].ownershipChain);
+  writeJsonToFiles(uboArray);
 }

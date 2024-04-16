@@ -1,0 +1,14 @@
+{
+  "did:web:johndoe.com": [
+    "did:web:opco.com",
+    "did:web:holdco1.com"
+  ],
+  "did:web:janedoe.com": [
+    "did:web:opco.com",
+    "did:web:holdco2.com"
+  ],
+  "did:web:marydoe.com": [
+    "did:web:opco.com",
+    "did:web:holdco2.com"
+  ]
+}
