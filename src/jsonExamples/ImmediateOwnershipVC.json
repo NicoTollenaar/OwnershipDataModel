@@ -20,6 +20,7 @@
           "documentName": "shareholder register HoldCo2",
           "documentDate": "2020-04-09",
           "documentType": "shareholder register",
+          "documentAbstract": "short summary of document",
           "ref": "uri-shareholder-register-holdco2",
           "hash": "0c046427c7d8583d73c2bd8842f27761c54427dc96bf981d1366173279e21dfd"
         }
@@ -36,6 +37,7 @@
           "documentName": "shareholder register HoldCo2",
           "documentDate": "2020-04-09",
           "documentType": "shareholder register",
+          "documentAbstract": "short summary of document",
           "ref": "uri-shareholder-register-holdco2",
           "hash": "0c046427c7d8583d73c2bd8842f27761c54427dc96bf981d1366173279e21dfd"
         }

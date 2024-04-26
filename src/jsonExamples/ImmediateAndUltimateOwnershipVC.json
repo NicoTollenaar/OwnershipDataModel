@@ -21,6 +21,7 @@
             "documentName": "shareholder register OpCo",
             "documentDate": "2020-04-09",
             "documentType": "shareholder register",
+            "documentAbstract": "short summary of document",
             "ref": "uri-shareholder-register-opco",
             "hash": "7f693c73002cb8d0240f825adfe9bab72603090afdc9e539568c3f3ee9722e8c"
           }
@@ -39,6 +40,7 @@
             "documentName": "shareholder register OpCo",
             "documentDate": "2020-04-09",
             "documentType": "shareholder register",
+            "documentAbstract": "short summary of document",
             "ref": "uri-shareholder-register-opco",
             "hash": "7f693c73002cb8d0240f825adfe9bab72603090afdc9e539568c3f3ee9722e8c"
           }
@@ -90,6 +92,7 @@
                     "documentName": "shareholder register OpCo",
                     "documentDate": "2020-04-09",
                     "documentType": "shareholder register",
+                    "documentAbstract": "short summary of document",
                     "ref": "uri-shareholder-register-opco",
                     "hash": "7f693c73002cb8d0240f825adfe9bab72603090afdc9e539568c3f3ee9722e8c"
                   }
@@ -108,6 +111,7 @@
                     "documentName": "shareholder register OpCo",
                     "documentDate": "2020-04-09",
                     "documentType": "shareholder register",
+                    "documentAbstract": "short summary of document",
                     "ref": "uri-shareholder-register-opco",
                     "hash": "7f693c73002cb8d0240f825adfe9bab72603090afdc9e539568c3f3ee9722e8c"
                   }
@@ -138,6 +142,7 @@
                   "documentName": "shareholder register HoldCo1",
                   "documentDate": "2020-04-09",
                   "documentType": "shareholder register",
+                  "documentAbstract": "short summary of document",
                   "ref": "uri-shareholder-register-holdco1",
                   "hash": "81e7226d3695251bdd5d26220d0ba13f78ceccad72194eaa6340f7463b5e15df"
                 }
@@ -192,6 +197,7 @@
                     "documentName": "shareholder register OpCo",
                     "documentDate": "2020-04-09",
                     "documentType": "shareholder register",
+                    "documentAbstract": "short summary of document",
                     "ref": "uri-shareholder-register-opco",
                     "hash": "7f693c73002cb8d0240f825adfe9bab72603090afdc9e539568c3f3ee9722e8c"
                   }
@@ -210,6 +216,7 @@
                     "documentName": "shareholder register OpCo",
                     "documentDate": "2020-04-09",
                     "documentType": "shareholder register",
+                    "documentAbstract": "short summary of document",
                     "ref": "uri-shareholder-register-opco",
                     "hash": "7f693c73002cb8d0240f825adfe9bab72603090afdc9e539568c3f3ee9722e8c"
                   }
@@ -240,6 +247,7 @@
                   "documentName": "shareholder register HoldCo2",
                   "documentDate": "2020-04-09",
                   "documentType": "shareholder register",
+                  "documentAbstract": "short summary of document",
                   "ref": "uri-shareholder-register-holdco2",
                   "hash": "0c046427c7d8583d73c2bd8842f27761c54427dc96bf981d1366173279e21dfd"
                 }
@@ -256,6 +264,7 @@
                   "documentName": "shareholder register HoldCo2",
                   "documentDate": "2020-04-09",
                   "documentType": "shareholder register",
+                  "documentAbstract": "short summary of document",
                   "ref": "uri-shareholder-register-holdco2",
                   "hash": "0c046427c7d8583d73c2bd8842f27761c54427dc96bf981d1366173279e21dfd"
                 }
@@ -310,6 +319,7 @@
                     "documentName": "shareholder register OpCo",
                     "documentDate": "2020-04-09",
                     "documentType": "shareholder register",
+                    "documentAbstract": "short summary of document",
                     "ref": "uri-shareholder-register-opco",
                     "hash": "7f693c73002cb8d0240f825adfe9bab72603090afdc9e539568c3f3ee9722e8c"
                   }
@@ -328,6 +338,7 @@
                     "documentName": "shareholder register OpCo",
                     "documentDate": "2020-04-09",
                     "documentType": "shareholder register",
+                    "documentAbstract": "short summary of document",
                     "ref": "uri-shareholder-register-opco",
                     "hash": "7f693c73002cb8d0240f825adfe9bab72603090afdc9e539568c3f3ee9722e8c"
                   }
@@ -358,6 +369,7 @@
                   "documentName": "shareholder register HoldCo2",
                   "documentDate": "2020-04-09",
                   "documentType": "shareholder register",
+                  "documentAbstract": "short summary of document",
                   "ref": "uri-shareholder-register-holdco2",
                   "hash": "0c046427c7d8583d73c2bd8842f27761c54427dc96bf981d1366173279e21dfd"
                 }
@@ -374,6 +386,7 @@
                   "documentName": "shareholder register HoldCo2",
                   "documentDate": "2020-04-09",
                   "documentType": "shareholder register",
+                  "documentAbstract": "short summary of document",
                   "ref": "uri-shareholder-register-holdco2",
                   "hash": "0c046427c7d8583d73c2bd8842f27761c54427dc96bf981d1366173279e21dfd"
                 }

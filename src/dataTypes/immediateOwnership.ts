@@ -73,7 +73,7 @@ type SupportingDocument = {
   documentName: string | undefined;
   documentDate: string | undefined; // date string in ISO 8601 format ("YYYY-MM-DD");
   documentParties?: string[];
-  documentAbstract?: string;
+  documentAbstract?: string; // short summary of document
   ref: string;
   hash: string;
 };
