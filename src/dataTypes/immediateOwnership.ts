@@ -11,6 +11,13 @@ export interface BasicEntityInfo {
   LEI: string;
   businessName: string;
   legalForm: LegalForm;
+  registeredAddress: {
+    street?: string;
+    houseNumber?: string;
+    postalCode?: string;
+    city?: string;
+    country: string;
+  };
 }
 
 interface LegalForm {

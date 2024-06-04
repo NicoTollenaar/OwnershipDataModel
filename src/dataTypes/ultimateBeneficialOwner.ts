@@ -18,4 +18,12 @@ export interface UltimateBeneficialOwnerVC extends UltimateBeneficialOwner {
   [key: string]: any;
 }
 
-type UboType = "UBO" | "pseudo-UBO";
+type UboType =
+  | "shareholder (non-voting)"
+  | "shareholder (voting)"
+  | "natural person with ultimate control via other means"
+  | "senior Management Official (SMO)"
+  | "settlor"
+  | "trustee"
+  | "protector"
+  | "beneficiary";

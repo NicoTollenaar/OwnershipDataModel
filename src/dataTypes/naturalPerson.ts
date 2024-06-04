@@ -1,6 +1,10 @@
 export interface NaturalPerson {
   did: string;
   firstNames: string | string[];
+  middleNames: string | string[];
+  prefixes: string | string[];
+  dateOfBirth: string; // ISO date format jjjj-mm-dd
+  nationality?: string;
   lastName: string;
   identityDocument: IdentityDocument;
   address: {

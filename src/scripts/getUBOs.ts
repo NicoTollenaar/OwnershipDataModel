@@ -178,7 +178,7 @@ function getUBOs(
     let ubo = { ...uboOriginal };
     ubo["ownershipChain"] = uboChainsPopulated[key];
     ubo.isPEP = true;
-    ubo.uboType = "UBO";
+    ubo.uboType = "shareholder (voting)";
     uboArray.push(ubo);
   }
   fs.writeFileSync(
