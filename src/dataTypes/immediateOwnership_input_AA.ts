@@ -12,10 +12,10 @@ export interface BasicEntityInfo {
   businessName: string;
   legalForm: LegalForm;
   registeredAddress: {
-    street: string;
-    houseNumber: string;
-    postalCode: string;
-    city: string;
+    street?: string;
+    houseNumber?: string;
+    postalCode?: string;
+    city?: string;
     country: string;
   };
 }
